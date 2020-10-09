@@ -81,11 +81,11 @@ public class ThreadManager {
      * @param channelList
      * @param outputDir
      */
-    public void generateV1Channel(File baseApk, List<String> channelList, File outputDir, boolean isFastMode) {
+    public void generateV1Channel(File baseApk, List<String> channelList, File outputDir, boolean isFastMode, String outFileName) {
         String apkName = baseApk.getName();
         setChannelNum(channelList.size());
         for (String channel : channelList) {
-            String apkChannelName = Util.getChannelApkName(apkName, channel);
+            String apkChannelName = Util.getChannelApkName(apkName, channel, outFileName);
             System.out.println("generateV1Channel , channel = " + channel + " , apkChannelName = " + apkChannelName);
             File destFile = new File(outputDir, apkChannelName);
             mExecutorService.execute(new ChanndelRunnable(baseApk, destFile, channel, isFastMode));

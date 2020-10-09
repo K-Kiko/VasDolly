@@ -37,6 +37,17 @@ public class Main {
         String cmdFast = "-f";//极速模式：生成渠道包不进行校验（速度可以提升10倍以上）
         String cmdMultiThreadChannel = "-mtc";//基于V1签名生成多渠道包时，使用多线程模式
         String cmdHelp = "help";
+        String cmdRn = "-rn";
+
+        String outFileName = "";
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            int nextIndex = i + 1;
+            if (cmdRn.equals(arg) && args.length > nextIndex) {
+                outFileName = args[nextIndex];
+                break;
+            }
+        }
 
         String help = "The commands are:\n" +
                 "java -jar VasDolly.jar [global options] [general args] [input file] [output directory/.apk file] \n\n" +
@@ -61,6 +72,7 @@ public class Main {
                 "    java -jar VasDolly.jar put -mtc channel.txt /home/user/base.apk /home/user/\n" +
                 "    java -jar VasDolly.jar put -c channel.txt -f /home/user/base.apk /home/user/\n" +
                 "    java -jar VasDolly.jar put -mtc channel.txt -f /home/user/base.apk /home/user/\n\n" +
+                "    java -jar VasDolly.jar put -mtc channel.txt -rn outputFileName.apk /home/user/base.apk /home/user/\n\n" +
                 "Use commas to write multiple channels , you can also use channel file.\n";
 
         if (args.length == 0 || args[0] == null || args[0].trim().length() == 0) {
@@ -102,7 +114,7 @@ public class Main {
                     if (command1.equals(cmdChannel) || command1.equals(cmdMultiThreadChannel) || command1.equals(cmdFast)) { //插入渠道信息
                         boolean isMultiThread = false;
                         boolean isFastMode = false;
-                        if (args.length == 5 || args.length == 6) {
+                        if (args.length > 5) {
                             //baseApk
                             String baseApkPath = args[args.length - 2].trim();
                             File baseApk = new File(baseApkPath);
@@ -129,7 +141,7 @@ public class Main {
                             }
 
                             String channels = "";
-                            if (args.length == 5) {
+                            if (args.length == 5 || outFileName != null && !"".equals(outFileName)) {
                                 isFastMode = false;
                                 if (command1.equals(cmdChannel) || command1.equals(cmdMultiThreadChannel)) {
                                     isMultiThread = command1.equals(cmdMultiThreadChannel);
@@ -173,9 +185,16 @@ public class Main {
                                 String[] channelArray = channels.split(",");
                                 channelList = Arrays.asList(channelArray);
                             }
-                            Util.writeChannel(baseApk, channelList, outputDir, isMultiThread, isFastMode);
+                            System.out.print("\n==============================");
+                            System.out.print("\nbaseApk: " + baseApk);
+                            System.out.print("\nchannelList: " + channelList.toString());
+                            System.out.print("\nisMultiThread: " + isMultiThread);
+                            System.out.print("\nisFastMode: " + isFastMode);
+                            System.out.print("\noutFileName: " + outFileName);
+                            System.out.print("\n==============================");
+                            Util.writeChannel(baseApk, channelList, outputDir, isMultiThread, isFastMode, outFileName);
                         } else {
-                            System.out.print("\n\nPlease enter the correct command!");
+                            System.out.print("\n\nPlease enter the correct command!9");
                         }
                     } else {
                         System.out.print("\n\n'put' only support -c or -mtc arg!");
@@ -196,13 +215,13 @@ public class Main {
                                 System.out.print("\n\nremove channel success");
                             }
                         } else {
-                            System.out.print("\n\nPlease enter the correct command!");
+                            System.out.print("\n\nPlease enter the correct command!10");
                         }
                     } else {
-                        System.out.print("\n\nPlease enter the correct command!");
+                        System.out.print("\n\nPlease enter the correct command!11");
                     }
                 } else {
-                    System.out.print("\n\nPlease enter the correct command!");
+                    System.out.print("\n\nPlease enter the correct command!12");
                 }
             }
         }
