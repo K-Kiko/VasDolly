@@ -114,7 +114,7 @@ public class Main {
                     if (command1.equals(cmdChannel) || command1.equals(cmdMultiThreadChannel) || command1.equals(cmdFast)) { //插入渠道信息
                         boolean isMultiThread = false;
                         boolean isFastMode = false;
-                        if (args.length > 5) {
+                        if (args.length >= 5) {
                             //baseApk
                             String baseApkPath = args[args.length - 2].trim();
                             File baseApk = new File(baseApkPath);
